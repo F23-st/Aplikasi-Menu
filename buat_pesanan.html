@@ -163,11 +163,14 @@
         <h6 class="m-0 font-weight-bold text-primary">Buat Pesanan Baru</h6>
     </div>
     <div class="card-body">
-        <form id="formPesanan">
+        <!-- <form id="formPesanan"> -->
+            <form name="formPesanan" data-netlify="true" id="formPesanan" method="POST" action="/success">
+            <input type="hidden" name="form-name" value="formPesanan" />
             <div class="form-group">
                 <label for="namaPemesan">Nama Pemesan</label>
-                <input type="text" class="form-control" id="namaPemesan" required>
+                <input type="text" class="form-control" id="namaPemesan" name="nama_pemesan" required>
             </div>
+                <input type="hidden" name="rincian_pesanan_json" id="rincianPesananJson">
             <h5 class="mt-4">Pilih Menu:</h5>
             <div id="daftarMenu" class="row">
                 <div class="col-lg-4 mb-4">
@@ -196,7 +199,7 @@
                         <h6 class="mt-2">Nasi Uduk</h6>
                         <p>Harga: Rp 10.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="1" data-harga="15000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="3" data-harga="10000">
                         </div>
                     </div>
                 </div>
@@ -206,7 +209,7 @@
                         <h6 class="mt-2">Es Krim 3 Rasa</h6>
                         <p>Harga: Rp 13.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="2" data-harga="5000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="4" data-harga="13000">
                         </div>
                     </div>
                 </div>
@@ -216,7 +219,7 @@
                         <h6 class="mt-2">Nasi Goreng Biasa</h6>
                         <p>Harga: Rp 10.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="1" data-harga="15000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="5" data-harga="10000">
                         </div>
                     </div>
                 </div>
@@ -226,7 +229,7 @@
                         <h6 class="mt-2">Jus</h6>
                         <p>Harga: Rp 7.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="2" data-harga="5000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="6" data-harga="7000">
                         </div>
                     </div>
                 </div>
@@ -236,7 +239,7 @@
                         <h6 class="mt-2">Martabak Telur</h6>
                         <p>Harga: Rp 6.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="1" data-harga="15000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="7" data-harga="6000">
                         </div>
                     </div>
                 </div>
@@ -246,7 +249,7 @@
                         <h6 class="mt-2">Sosro</h6>
                         <p>Harga: Rp 5.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="2" data-harga="5000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="8" data-harga="5000">
                         </div>
                     </div>
                 </div>
@@ -256,7 +259,7 @@
                         <h6 class="mt-2">Roti Canai</h6>
                         <p>Harga: Rp 10.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="1" data-harga="15000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="9" data-harga="10000">
                         </div>
                     </div>
                 </div>
@@ -266,7 +269,7 @@
                         <h6 class="mt-2">Air Putih</h6>
                         <p>Harga: Rp 1.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="2" data-harga="5000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="10" data-harga="1000">
                         </div>
                     </div>
                 </div>
@@ -276,7 +279,7 @@
                         <h6 class="mt-2">Bakso</h6>
                         <p>Harga: Rp 10.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="1" data-harga="15000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="11" data-harga="10000">
                         </div>
                     </div>
                 </div>
@@ -286,7 +289,7 @@
                         <h6 class="mt-2">Mie Ayam</h6>
                         <p>Harga: Rp 10.000</p>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="2" data-harga="5000">
+                            <input type="number" class="form-control input-kuantitas" value="0" min="0" data-menu-id="12" data-harga="10000">
                         </div>
                     </div>
                 </div>
@@ -294,6 +297,10 @@
             <hr>
             <div class="text-right">
                 <button type="submit" class="btn btn-primary btn-lg">Proses Pesanan</button>
+            </div>
+                <hr>
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary btn-lg">Proses & Simpan Pesanan</button>
             </div>
         </form>
     </div>
@@ -406,4 +413,5 @@ document.getElementById('formPesanan').addEventListener('submit', function(e) {
 
 
 </html>
+
 
