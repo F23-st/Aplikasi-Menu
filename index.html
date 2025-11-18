@@ -342,17 +342,84 @@
 </div>
 
 <script>
-// Contoh data untuk Chart.js (Data ini harusnya dari Back-end Anda)
-var dataMenu = {
-    labels: ["Nasi Goreng", "Es Teh", "Ayam Bakar", "Mie Instan"],
-    datasets: [{
-        label: "Jumlah Pesanan",
-        backgroundColor: "#4e73df",
-        hoverBackgroundColor: "#2e59d9",
-        borderColor: "#4e73df",
-        data: [150, 120, 90, 75],
-    }],
-};
+// Tambahkan skrip ini di akhir index.html, di dalam tag <script>
+
+function formatRupiah(angka) {
+    var reverse = angka.toString().split('').reverse().join(''),
+    ribuan = reverse.match(/\d{1,3}/g);
+    ribuan = ribuan.join('.').split('').reverse().join('');
+    return 'Rp ' + ribuan;
+}
+
+function updateDashboardCards() {
+    // === SIMULASI DATA DARI DATABASE ===
+    // Dalam implementasi nyata, data ini akan diambil dari Database/API Anda
+    const dataStatistik = {
+        monthlyEarnings: 4500000, // Rp 4.500.000
+        annualEarnings: 45000000, // Rp 45.000.000
+        totalPesananHariIni: 35,
+        pesananDiproses: 9,
+        pesananDibatalkan: 3,
+        totalPesananSelesai: 23 // TotalPesananHariIni - PesananDiproses
+    };
+    // ====================================
+
+    // Update Earnings (Monthly)
+    document.getElementById('monthlyEarnings').textContent = formatRupiah(dataStatistik.monthlyEarnings);
+
+    // Update Earnings (Annual)
+    document.getElementById('annualEarnings').textContent = formatRupiah(dataStatistik.annualEarnings);
+    
+    // Update Total Pesanan Hari Ini (Tasks)
+    document.getElementById('totalPesananHariIni').textContent = dataStatistik.totalPesananHariIni;
+    
+    // Update Pesanan Diproses
+    document.getElementById('pesananDiproses').textContent = dataStatistik.pesananDiproses;
+
+    // Update Pesanan Selesai (Menggunakan card yang sudah Anda buat sebelumnya)
+    document.getElementById('jumlahPesananSelesai').textContent = dataStatistik.totalPesananSelesai;
+
+
+    // --- Logika Task Percentage (Contoh: Pesanan Selesai vs Total) ---
+    const totalOrders = dataStatistik.totalPesananHariIni;
+    const completedOrders = dataStatistik.totalPesananSelesai;
+    let taskPercentage = 0;
+    
+    if (totalOrders > 0) {
+        taskPercentage = Math.round((completedOrders / totalOrders) * 100);
+    }
+    
+    // Anda memiliki card Tasks (50%) di index.html, kita akan mengupdatenya:
+    const taskCard = document.querySelector('.col-xl-3 .border-left-info .card-body');
+    if (taskCard) {
+        // Update teks persentase
+        taskCard.querySelector('.h5.mb-0.mr-3').textContent = taskPercentage + '%';
+        // Update progress bar
+        const progressBar = taskCard.querySelector('.progress-bar');
+        if (progressBar) {
+            progressBar.style.width = taskPercentage + '%';
+            progressBar.setAttribute('aria-valuenow', taskPercentage);
+        }
+    }
+}
+
+// Panggil fungsi saat dokumen dimuat
+$(document).ready(function() {
+    updateDashboardCards();
+});
+</script>
+    
+// // Contoh data untuk Chart.js (Data ini harusnya dari Back-end Anda)
+// var dataMenu = {
+//     labels: ["Nasi Goreng", "Es Teh", "Ayam Bakar", "Mie Instan"],
+//     datasets: [{
+//         label: "Jumlah Pesanan",
+//         backgroundColor: "#4e73df",
+//         hoverBackgroundColor: "#2e59d9",
+//         borderColor: "#4e73df",
+//         data: [150, 120, 90, 75],
+//     }],
+// };
 
 // Logika Chart.js untuk menggambar Bar Chart akan diletakkan di file JS utama SB Admin 2
 // (misalnya: 'js/demo/chart-bar-demo.js')
@@ -389,7 +456,7 @@ var dataMenu = {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="monthlyEarnings"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -399,7 +466,7 @@ var dataMenu = {
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Earnings (Annual) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -407,7 +474,7 @@ var dataMenu = {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="annualEarnings">Rp 0</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -423,9 +490,11 @@ var dataMenu = {
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pesanan (Hari Ini)
                                             </div>
-                                            <div class="row no-gutters align-items-center">
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalPesananHariIni">0</div>
+                                            
+                                            <!-- <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
                                                 </div>
@@ -436,7 +505,7 @@ var dataMenu = {
                                                             aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -454,7 +523,8 @@ var dataMenu = {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Pesanan Dibatalkan</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="pesananDibatalkan">0</div>
+                                            <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">18</div> -->
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
