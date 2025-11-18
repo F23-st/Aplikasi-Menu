@@ -298,10 +298,6 @@
             <div class="text-right">
                 <button type="submit" class="btn btn-primary btn-lg">Proses Pesanan</button>
             </div>
-                <hr>
-            <div class="text-right">
-                <button type="submit" class="btn btn-primary btn-lg">Proses & Simpan Pesanan</button>
-            </div>
         </form>
     </div>
 </div>
@@ -312,28 +308,38 @@ document.getElementById('formPesanan').addEventListener('submit', function(e) {
     // Logika untuk mengumpulkan pesanan
     const nama = document.getElementById('namaPemesan').value;
     const items = [];
+    let totalHarga = 0;
     document.querySelectorAll('.input-kuantitas').forEach(input => {
         const qty = parseInt(input.value);
         if (qty > 0) {
             // Logika lebih lanjut diperlukan untuk mendapatkan nama menu dari data-menu-id
-            // Untuk contoh ini, kita asumsikan namanya
-            let namaMenu = 'Menu X';
-            if (input.dataset.menuId === '1') namaMenu = 'Nasi Goreng Kampung';
-            if (input.dataset.menuId === '2') namaMenu = 'Es Teh Manis';
-            if (input.dataset.menuId === '3') namaMenu = 'Nasi Uduk';
-            if (input.dataset.menuId === '4') namaMenu = 'Es Krim 3 Rasa';
-            if (input.dataset.menuId === '5') namaMenu = 'Nasi Goreng Biasa';
-            if (input.dataset.menuId === '6') namaMenu = 'Jus';
-            if (input.dataset.menuId === '7') namaMenu = 'Martabak Telur';
-            if (input.dataset.menuId === '8') namaMenu = 'Sosro';
-            if (input.dataset.menuId === '9') namaMenu = 'Roti Canai';
-            if (input.dataset.menuId === '10') namaMenu = 'Air Putih';
-            if (input.dataset.menuId === '11') namaMenu = 'Bakso';
-            if (input.dataset.menuId === '12') namaMenu = 'Mie Ayam';
+            // Untuk contoh ini, kita asumsikan 
+            const namaMenu = input.dataset.namaMenu;
+            const hargaSatuan = parseInt(input.dataset.harga);
+            const subtotal = qty * hargaSatuan;
+            totalHarga += subtotal;
+
+            
+            // let namaMenu = 'Menu X';
+            // if (input.dataset.menuId === '1') namaMenu = 'Nasi Goreng Kampung';
+            // if (input.dataset.menuId === '2') namaMenu = 'Es Teh Manis';
+            // if (input.dataset.menuId === '3') namaMenu = 'Nasi Uduk';
+            // if (input.dataset.menuId === '4') namaMenu = 'Es Krim 3 Rasa';
+            // if (input.dataset.menuId === '5') namaMenu = 'Nasi Goreng Biasa';
+            // if (input.dataset.menuId === '6') namaMenu = 'Jus';
+            // if (input.dataset.menuId === '7') namaMenu = 'Martabak Telur';
+            // if (input.dataset.menuId === '8') namaMenu = 'Sosro';
+            // if (input.dataset.menuId === '9') namaMenu = 'Roti Canai';
+            // if (input.dataset.menuId === '10') namaMenu = 'Air Putih';
+            // if (input.dataset.menuId === '11') namaMenu = 'Bakso';
+            // if (input.dataset.menuId === '12') namaMenu = 'Mie Ayam';
+            
             items.push({
                 nama: namaMenu,
                 kuantitas: qty,
-                hargaSatuan: parseInt(input.dataset.harga)
+                hargaSatuan: hargaSatuan,
+                subtotal: subtotal
+                // hargaSatuan: parseInt(input.dataset.harga)
             });
         }
     });
@@ -346,6 +352,22 @@ document.getElementById('formPesanan').addEventListener('submit', function(e) {
         alert('Anda belum memilih menu.');
     }
 });
+    // 1. Buat Objek Data Lengkap (termasuk total dan item)
+    const dataPesananLengkap = {
+        nama_pemesan: nama,
+        timestamp: new Date().toISOString(),
+        total_harga: totalHarga,
+        status: "DIPROSES", // Status awal
+        items: items
+    };
+    
+    // 2. Isi Hidden Field dengan string JSON
+    document.getElementById('rincianPesananJson').value = JSON.stringify(dataPesananLengkap);
+
+    // Jika Anda masih ingin menampilkan struk, Anda bisa memindahkannya ke sini:
+     tampilkanStruk(nama, items);
+     e.preventDefault(); // dan tambahkan ini agar tidak dikirim ke Netlify jika menggunakan AJAX
+    
 </script> 
 
             </div>
@@ -413,5 +435,6 @@ document.getElementById('formPesanan').addEventListener('submit', function(e) {
 
 
 </html>
+
 
 
